@@ -1,9 +1,15 @@
-import { Router, type Request, type Response } from "express";
+import { type Request, type Response, Router } from "express";
+import loginRoute from "./loginRoute";
 
-const routes = Router();
+const router = Router()
 
-routes.get("/", (req: Request, res: Response) => {
-    res.status(200).json({ message: "success" });
-});
+router.get("/", (
+    req : Request,
+    res : Response
+) => {
+    res.status(200).json({message : "success"})
+})
 
-export { routes };
+router.use("/login", loginRoute)
+
+export default router
