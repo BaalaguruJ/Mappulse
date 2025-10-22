@@ -1,6 +1,6 @@
 import { type Request, type Response, Router } from "express";
 import loginRoute from "./loginRoute";
-
+import registerRoute from "./RegisterRoute";
 const router = Router()
 
 router.get("/", (
@@ -11,5 +11,5 @@ router.get("/", (
 })
 
 router.use("/login", loginRoute)
-
+router.use("/register", registerRoute);
 export default router

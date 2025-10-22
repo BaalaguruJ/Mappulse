@@ -1,24 +1,32 @@
 import { drizzle } from "drizzle-orm/node-postgres";
 import { Pool } from "pg";
-import dotenv from 'dotenv';
+import * as schema from "./schema/user";
+import dotenv from "dotenv";
+
 dotenv.config();
 
-let db : ReturnType<typeof drizzle>;
+// This type will be the Drizzle instance
+export let db: ReturnType<typeof drizzle<typeof schema>>;
 
-const startDb = async () => {
+/**
+ * Connects to the database, initializes the Drizzle instance,
+ * and verifies the connection.
+ */
+export const startDb = async () => {
+  try {
     const pool = new Pool({
-        connectionString: process.env.DB_URL,
+      connectionString: process.env.DB_URL, // Make sure DB_URL is in your .env file
     });
-    try {
-        await pool.query('select 1')
-        console.log("Connection Established!");
 
-        db = drizzle({client : pool})
+    // Test the connection
+    await pool.query("SELECT 1");
+    console.log("Database Connection Established!");
 
-    } catch (error) {
-        console.error("Database connection failed:", error);
-        process.exit(1);
-    }
-}
+    // Initialize the 'db' export with the schema
+    db = drizzle(pool, { schema });
 
-export {startDb, db}
+  } catch (error) {
+    console.error("Database connection failed:", error);
+    process.exit(1); // Exit the app if DB connection fails
+  }
+};
