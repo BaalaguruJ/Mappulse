@@ -22,7 +22,7 @@ function App() {
 				path="/"
 			/>
 			<Route
-				element={<Map/>}
+				element={<Map lat={13.0827} lng={80.2707}/>}
 				path="/map"
 			/>
 		</Routes>
